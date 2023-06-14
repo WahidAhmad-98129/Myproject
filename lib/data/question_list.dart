@@ -10,4 +10,13 @@ List<QuestionModel> questions =[
       "Babrak-Karmal":false,
     }
   ),
+  QuestionModel(
+    "What Is The Legial Age For Voting ?",
+    {
+      "18":true,
+      "12":false,
+      "16":false,
+      "11":false,
+    }
+  ),
 ];

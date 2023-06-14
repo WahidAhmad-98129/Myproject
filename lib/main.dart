@@ -2,13 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:my_final_app/data/question_list.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  MyApp({super.key});
 
   // This widget is the root of your application.
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -26,15 +27,28 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  Color mainColor = Color(0xFF252c4a);
+  Color secondColor = Color(0xFF177eeb);
+  PageController? _controller = PageController(initialPage: 0);
+
+  bool isPrssed = false;
+  Color isTrue = Colors.green;
+  Color isWrong = Colors.red;
+  Color btnColor = Color(0xFF177eeb);
+  int score = 0;
   @override
   Widget build(BuildContext context) {
-    Color mainColor = Color(0xFF252c4a);
-    Color secondColor = Color(0xFF177eeb);
     return Scaffold(
       backgroundColor: mainColor,
       body: Padding(
         padding: EdgeInsets.all(18),
         child: PageView.builder(
+            controller: _controller!,
+            onPageChanged: (page) {
+              setState(() {
+                isPrssed = false;
+              });
+            },
             itemCount: questions.length,
             itemBuilder: (context, index) {
               return Column(
@@ -77,9 +91,31 @@ class _HomePageState extends State<HomePage> {
                       padding: EdgeInsets.all(12),
                       child: MaterialButton(
                         shape: StadiumBorder(),
-                        color: secondColor,
+                        color: isPrssed
+                            ? questions[index].answer!.entries.toList()[i].value
+                                ? isTrue
+                                : isWrong
+                            : secondColor,
+                        // color:btnColor,
                         padding: EdgeInsets.all(18),
-                        onPressed: () {},
+                        onPressed: isPrssed
+                            ? () {}
+                            : () {
+                                setState(() {
+                                  isPrssed = true;
+                                });
+                                if (questions[index]
+                                    .answer!
+                                    .entries
+                                    .toList()[i]
+                                    .value) {
+                                  score += 10;
+                                } else {
+                                  setState(() {
+                                    btnColor = isWrong;
+                                  });
+                                }
+                              },
                         child: Text(
                           questions[index].answer!.keys.toList()[i],
                           style: TextStyle(
@@ -89,16 +125,28 @@ class _HomePageState extends State<HomePage> {
                       ),
                     ),
                   SizedBox(
-                    height: 30,
+                    height: 50,
                   ),
-                  OutlinedButton(
-                    onPressed: () {},
-                    child: Text(
-                      "Next Question",
-                      style: TextStyle(
-                        color: Colors.white,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      OutlinedButton(
+                        onPressed: isPrssed
+                            ? () {
+                                _controller!.nextPage(
+                                    duration: Duration(microseconds: 500),
+                                    curve: Curves.linear);
+                              }
+                            : null,
+                        style: ButtonStyle(),
+                        child: Text(
+                          "Next Question",
+                          style: TextStyle(
+                            color: Colors.white,
+                          ),
+                        ),
                       ),
-                    ),
+                    ],
                   ),
                 ],
               );
