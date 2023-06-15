@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:my_final_app/Screens/result_screen.dart';
 import 'package:my_final_app/data/question_list.dart';
 
 void main() {
@@ -132,7 +133,15 @@ class _HomePageState extends State<HomePage> {
                     children: [
                       OutlinedButton(
                         onPressed: isPrssed
-                            ? () {
+                            ? index +1 == questions.length 
+                            ?(){
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context)=>
+                                    ResultScreen(score)));
+                            }
+                            : () {
                                 _controller!.nextPage(
                                     duration: Duration(microseconds: 500),
                                     curve: Curves.linear);
@@ -140,7 +149,7 @@ class _HomePageState extends State<HomePage> {
                             : null,
                         style: ButtonStyle(),
                         child: Text(
-                          "Next Question",
+                          index +1== questions.length ? "See Result" : "Next Question",
                           style: TextStyle(
                             color: Colors.white,
                           ),
