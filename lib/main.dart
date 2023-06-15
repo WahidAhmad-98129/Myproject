@@ -41,6 +41,10 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: mainColor,
+      appBar: AppBar(
+        title: Center(child: Text("Kankor Exame")),
+        backgroundColor: Color.fromARGB(255, 68, 159, 121),
+      ),
       body: Padding(
         padding: EdgeInsets.all(18),
         child: PageView.builder(
@@ -59,7 +63,7 @@ class _HomePageState extends State<HomePage> {
                   SizedBox(
                     width: double.infinity,
                     child: Text(
-                      "Question $index / ${questions.length}",
+                      "Question ${index + 1} / ${questions.length}",
                       style: TextStyle(
                         fontSize: 30,
                         color: Colors.white,
@@ -75,10 +79,11 @@ class _HomePageState extends State<HomePage> {
                   SizedBox(
                     height: 20,
                   ),
+                  // Questions text
                   Text(
                     questions[index].question!,
                     style: TextStyle(
-                      fontSize: 28,
+                      fontSize: 25,
                       color: Colors.white,
                     ),
                   ),
@@ -97,7 +102,6 @@ class _HomePageState extends State<HomePage> {
                                 ? isTrue
                                 : isWrong
                             : secondColor,
-                        // color:btnColor,
                         padding: EdgeInsets.all(18),
                         onPressed: isPrssed
                             ? () {}
@@ -110,17 +114,19 @@ class _HomePageState extends State<HomePage> {
                                     .entries
                                     .toList()[i]
                                     .value) {
-                                  score += 10;
+                                  score += 1;
                                 } else {
                                   setState(() {
                                     btnColor = isWrong;
                                   });
                                 }
                               },
+                        //questions answer part
                         child: Text(
                           questions[index].answer!.keys.toList()[i],
                           style: TextStyle(
                             color: Colors.white,
+                            fontSize: 20,
                           ),
                         ),
                       ),
@@ -133,25 +139,36 @@ class _HomePageState extends State<HomePage> {
                     children: [
                       OutlinedButton(
                         onPressed: isPrssed
-                            ? index +1 == questions.length 
-                            ?(){
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context)=>
-                                    ResultScreen(score)));
-                            }
-                            : () {
-                                _controller!.nextPage(
-                                    duration: Duration(microseconds: 500),
-                                    curve: Curves.linear);
-                              }
+                            ? index + 1 == questions.length
+                                ? () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                ResultScreen(score)));
+                                  }
+                                : () {
+                                    _controller!.nextPage(
+                                        duration: Duration(microseconds: 500),
+                                        curve: Curves.linear);
+                                    setState(() {
+                                      isPrssed = false;
+                                    });
+                                  }
                             : null,
-                        style: ButtonStyle(),
+                        style: OutlinedButton.styleFrom(
+                          backgroundColor: Color.fromARGB(255, 47, 179, 14),
+                          shape: StadiumBorder(
+                            side: BorderSide(color: Colors.orange, width: 1),
+                          ),
+                        ),
                         child: Text(
-                          index +1== questions.length ? "See Result" : "Next Question",
+                          index + 1 == questions.length
+                              ? "See Result"
+                              : "Next Question",
                           style: TextStyle(
                             color: Colors.white,
+                            fontSize: 18,
                           ),
                         ),
                       ),
