@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:my_final_app/data/question_list.dart';
 import 'package:my_final_app/main.dart';
+import 'package:my_final_app/home_page.dart';
 
 class ResultScreen extends StatefulWidget {
   final int score;
@@ -16,6 +17,10 @@ class _ResultScreenState extends State<ResultScreen> {
     Color mainColor = Color(0xFF252c4a);
     Color secondColor = Color(0xFF177eeb);
     return Scaffold(
+       appBar: AppBar(
+        title: Center(child: Text("Result Page")),
+        backgroundColor: Color.fromARGB(255, 68, 159, 121),
+      ),
       backgroundColor: mainColor,
       body: Center(
         child: Column(
@@ -45,7 +50,7 @@ class _ResultScreenState extends State<ResultScreen> {
               height: 50,
             ),
             Text(
-              "${widget.score} / ${questions.length*1}",
+              "${widget.score} / 5",
               style: TextStyle(
                 color: Colors.orange,
                 fontSize: 45,
@@ -57,7 +62,7 @@ class _ResultScreenState extends State<ResultScreen> {
             ),
             MaterialButton(
               onPressed: (){
-                Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage()));
+                Navigator.push(context, MaterialPageRoute(builder: (context) => MyApp()));
               },
               elevation: 0.0,
               color: Color.fromARGB(255, 56, 121, 186),

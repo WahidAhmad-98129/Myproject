@@ -1,183 +1,131 @@
 import 'package:flutter/material.dart';
-import 'package:my_final_app/Screens/result_screen.dart';
-import 'package:my_final_app/data/question_list.dart';
+import 'home_page.dart';
 
 void main() {
   runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   MyApp({super.key});
 
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
   // This widget is the root of your application.
-
   @override
   Widget build(BuildContext context) {
+    
+
     return MaterialApp(
-      home: HomePage(),
+      
       debugShowCheckedModeBanner: false,
-    );
-  }
-}
-
-class HomePage extends StatefulWidget {
-  const HomePage({super.key});
-
-  @override
-  State<HomePage> createState() => _HomePageState();
-}
-
-class _HomePageState extends State<HomePage> {
-  Color mainColor = Color(0xFF252c4a);
-  Color secondColor = Color(0xFF177eeb);
-  PageController? _controller = PageController(initialPage: 0);
-
-  bool isPrssed = false;
-  Color isTrue = Colors.green;
-  Color isWrong = Colors.red;
-  Color btnColor = Color(0xFF177eeb);
-  int score = 0;
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: mainColor,
-      appBar: AppBar(
+      
+      home: Scaffold(
+        
+       appBar: AppBar(
         title: Center(child: Text("Kankor Exame")),
         backgroundColor: Color.fromARGB(255, 68, 159, 121),
       ),
-      body: Padding(
-        padding: EdgeInsets.all(18),
-        child: PageView.builder(
-            controller: _controller!,
-            onPageChanged: (page) {
-              setState(() {
-                isPrssed = false;
-              });
-            },
-            itemCount: questions.length,
-            itemBuilder: (context, index) {
-              return Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
+      backgroundColor: Color(0xFF252c4a),
+        body: Container(
+         
+          child: Column(
+            children: [
+              Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                // crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
+                  rowWiget(TxData: 'Welcome To Kankor Test', fontsi: 25),
+                  rowWiget(TxData: 'Please Chose The Section', fontsi: 20),
+                  rowWiget(TxData: ' you are Intrested in', fontsi: 18),
                   SizedBox(
-                    width: double.infinity,
-                    child: Text(
-                      "Question ${index + 1} / ${questions.length}",
-                      style: TextStyle(
-                        fontSize: 30,
-                        color: Colors.white,
-                        fontWeight: FontWeight.w300,
-                      ),
-                    ),
+                    height: 10,
                   ),
                   Divider(
-                    color: Colors.white,
-                    height: 5,
                     thickness: 3,
+                    color: Color.fromARGB(255, 208, 202, 202),
                   ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  // Questions text
-                  Text(
-                    questions[index].question!,
-                    style: TextStyle(
-                      fontSize: 25,
-                      color: Colors.white,
-                    ),
-                  ),
-                  SizedBox(
-                    height: 25,
-                  ),
-                  for (int i = 0; i < questions[index].answer!.length; i++)
-                    Container(
-                      width: double.infinity,
-                      margin: EdgeInsets.only(bottom: 18),
-                      padding: EdgeInsets.all(12),
-                      child: MaterialButton(
-                        shape: StadiumBorder(),
-                        color: isPrssed
-                            ? questions[index].answer!.entries.toList()[i].value
-                                ? isTrue
-                                : isWrong
-                            : secondColor,
-                        padding: EdgeInsets.all(18),
-                        onPressed: isPrssed
-                            ? () {}
-                            : () {
-                                setState(() {
-                                  isPrssed = true;
-                                });
-                                if (questions[index]
-                                    .answer!
-                                    .entries
-                                    .toList()[i]
-                                    .value) {
-                                  score += 1;
-                                } else {
-                                  setState(() {
-                                    btnColor = isWrong;
-                                  });
-                                }
-                              },
-                        //questions answer part
-                        child: Text(
-                          questions[index].answer!.keys.toList()[i],
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 20,
-                          ),
-                        ),
-                      ),
-                    ),
-                  SizedBox(
-                    height: 50,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      OutlinedButton(
-                        onPressed: isPrssed
-                            ? index + 1 == questions.length
-                                ? () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                ResultScreen(score)));
-                                  }
-                                : () {
-                                    _controller!.nextPage(
-                                        duration: Duration(microseconds: 500),
-                                        curve: Curves.linear);
-                                    setState(() {
-                                      isPrssed = false;
-                                    });
-                                  }
-                            : null,
-                        style: OutlinedButton.styleFrom(
-                          backgroundColor: Color.fromARGB(255, 47, 179, 14),
-                          shape: StadiumBorder(
-                            side: BorderSide(color: Colors.orange, width: 1),
-                          ),
-                        ),
-                        child: Text(
-                          index + 1 == questions.length
-                              ? "See Result"
-                              : "Next Question",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 18,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
+                  NewWidget(btnText: 'Islamic'),
+                  NewWidget(btnText: 'Geography'),
+                  NewWidget(btnText: 'Dari'),
+                  NewWidget(btnText: 'History'),
+                  NewWidget(btnText: 'Biology'),
                 ],
-              );
-            }),
+              )
+            ],
+          ),
+        ),
       ),
     );
   }
 }
+
+class rowWiget extends StatelessWidget {
+  final String? TxData;
+  final double? fontsi;
+  rowWiget({this.TxData, this.fontsi});
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(top: 10),
+          child: Text(
+            TxData ?? '',
+            style: TextStyle(fontSize: fontsi, color: Colors.white),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class NewWidget extends StatelessWidget {
+  final String? btnText;
+  const NewWidget({this.btnText});
+
+  
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: double.infinity,
+      child: Container(
+        decoration: BoxDecoration(
+          color: Color.fromARGB(255, 11, 82, 153),
+          
+          borderRadius: BorderRadius.all(
+            Radius.circular(20),
+          ),
+        ),
+        margin: EdgeInsets.fromLTRB(25, 20, 25, 0),
+        padding: EdgeInsets.all(5),
+        child: Center(
+            child: TextButton(
+          child: Text(
+            btnText ?? '',
+            style: TextStyle(fontSize: 20, color: Colors.white),
+          ),
+                onPressed: () {
+                  if (btnText != null) {
+
+                    // Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage(btnText!)));
+
+Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage(btnText: btnText!)));
+ 
+
+
+                  }
+                }
+        ),
+  ),
+      ),
+    );
+  }
+}
+
+
